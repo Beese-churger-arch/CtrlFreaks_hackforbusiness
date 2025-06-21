@@ -1,0 +1,81 @@
+
+
+
+
+.cart {
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
+  background-color: #fdfdfd;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.itemImage {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 16px;
+}
+
+.details {
+  flex: 1;
+}
+
+.quantityControls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.quantityControls button {
+  width: 32px;
+  height: 32px;
+  font-size: 16px;
+}
+
+.quantity {
+  font-weight: bold;
+  min-width: 20px;
+  text-align: center;
+}
+
+.payButton {
+  margin-top: 20px;
+  padding: 12px 24px;
+  font-size: 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.payButton:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+.deleteButton {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  color: #ff5555;
+  cursor: pointer;
+  padding: 0 8px;
+  line-height: 1;
+}
+
+.deleteButton:hover {
+  color: #ff0000;
+}

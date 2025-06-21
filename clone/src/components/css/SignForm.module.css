@@ -1,0 +1,54 @@
+
+.form-container {
+  max-width: 400px;
+  margin: 80px auto;
+  background: #fff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.form-container p {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.form-container b {
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #222;
+}
+
+.form-container input {
+  padding: 10px 12px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.form-container input:focus {
+  border-color: #e9411f;
+}
+
+.submit-button {
+  width: 10%;
+  padding: 12px;
+  background-color: #891e1e; /* red */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #faf9f8;
+  color: #b10d0d; /* add this to keep text visible on hover */
+}
+
