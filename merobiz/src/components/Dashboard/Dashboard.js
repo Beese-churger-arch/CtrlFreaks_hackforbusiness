@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import Sidebar from './Sidebar';
 import Footer from '../Footer';
 import { Routes, Route } from 'react-router-dom';
@@ -7,9 +7,12 @@ import ReceiptProcessing from './ReceiptProcessing';
 import FraudDetection from './FraudDetection';
 import BatchFraudDetection from './BatchFraudDetection';
 import {
-  LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, Tooltip, CartesianGrid, XAxis, YAxis, Legend, ResponsiveContainer
+  LineChart, Line, BarChart, Bar, PieChart, Pie, 
+  Cell, Tooltip, CartesianGrid, XAxis, YAxis, Legend, 
+  ResponsiveContainer
 } from 'recharts';
 
+// Sample data
 const sampleData = [
   { name: 'Jan', sales: 4000, users: 2400, frauds: 100 },
   { name: 'Feb', sales: 3000, users: 2210, frauds: 80 },
@@ -18,7 +21,71 @@ const sampleData = [
   { name: 'May', sales: 5890, users: 2181, frauds: 90 },
 ];
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
+
+// Memoized chart components
+const SalesChart = React.memo(({ data }) => (
+  <ResponsiveContainer width="100%" height={300}>
+    <LineChart data={data}>
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="name" />
+      <YAxis />
+      <Tooltip />
+      <Legend />
+      <Line type="monotone" dataKey="sales" stroke="#8884d8" strokeWidth={2} />
+    </LineChart>
+  </ResponsiveContainer>
+));
+
+const FraudChart = React.memo(({ data }) => (
+  <ResponsiveContainer width="100%" height={300}>
+    <BarChart data={data}>
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="name" />
+      <YAxis />
+      <Tooltip />
+      <Legend />
+      <Bar dataKey="frauds" fill="#f56565" radius={[4, 4, 0, 0]} />
+    </BarChart>
+  </ResponsiveContainer>
+));
+
+const UsersChart = React.memo(({ data }) => (
+  <ResponsiveContainer width="100%" height={300}>
+    <BarChart data={data}>
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="name" />
+      <YAxis />
+      <Tooltip />
+      <Legend />
+      <Bar dataKey="users" fill="#48bb78" radius={[4, 4, 0, 0]} />
+    </BarChart>
+  </ResponsiveContainer>
+));
+
+const DistributionChart = React.memo(({ data }) => (
+  <ResponsiveContainer width="100%" height={300}>
+    <PieChart>
+      <Pie
+        data={data}
+        dataKey="sales"
+        nameKey="name"
+        cx="50%"
+        cy="50%"
+        outerRadius={80}
+        innerRadius={40}
+        paddingAngle={5}
+        label
+      >
+        {data.map((_, index) => (
+          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+        ))}
+      </Pie>
+      <Tooltip />
+      <Legend layout="vertical" verticalAlign="middle" align="right" />
+    </PieChart>
+  </ResponsiveContainer>
+));
 
 // Sidebar width constants
 const SIDEBAR_WIDTH_COLLAPSED = 72;
@@ -26,15 +93,24 @@ const SIDEBAR_WIDTH_EXPANDED = 180;
 
 const Dashboard = () => {
   const [expanded, setExpanded] = useState(false);
+  const toggleSidebar = useCallback(() => setExpanded(prev => !prev), []);
+
+  const chartComponents = useMemo(() => [
+    { title: 'Sales Over Time', component: <SalesChart data={sampleData} /> },
+    { title: 'Fraud Detections', component: <FraudChart data={sampleData} /> },
+    { title: 'User Growth', component: <UsersChart data={sampleData} /> },
+    { title: 'Sales Distribution', component: <DistributionChart data={sampleData} /> }
+  ], [sampleData]);
 
   return (
     <div className="dashboard-layout" style={{ 
       display: 'flex', 
       flexDirection: 'column', 
-      minHeight: '100vh' 
+      minHeight: '100vh',
+      backgroundColor: '#f5f7fa'
     }}>
       <div style={{ display: 'flex', flex: 1 }}>
-        <Sidebar expanded={expanded} setExpanded={setExpanded} />
+        <Sidebar expanded={expanded} toggleSidebar={toggleSidebar} />
         <div 
           className="dashboard-content" 
           style={{ 
@@ -49,73 +125,29 @@ const Dashboard = () => {
               path="/"
               element={
                 <div>
-                  <h1>Sales Overview</h1>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '2rem' }}>
-                    
-                    <div className="chart-card">
-                      <h3>Sales Over Time</h3>
-                      <ResponsiveContainer width="100%" height={300}>
-                        <LineChart data={sampleData}>
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis dataKey="name" />
-                          <YAxis />
-                          <Tooltip />
-                          <Legend />
-                          <Line type="monotone" dataKey="sales" stroke="#8884d8" />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </div>
-
-                    <div className="chart-card">
-                      <h3>Fraud Detections</h3>
-                      <ResponsiveContainer width="100%" height={300}>
-                        <BarChart data={sampleData}>
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis dataKey="name" />
-                          <YAxis />
-                          <Tooltip />
-                          <Legend />
-                          <Bar dataKey="frauds" fill="#f56565" />
-                        </BarChart>
-                      </ResponsiveContainer>
-                    </div>
-
-                    <div className="chart-card">
-                      <h3>User Growth</h3>
-                      <ResponsiveContainer width="100%" height={300}>
-                        <BarChart data={sampleData}>
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis dataKey="name" />
-                          <YAxis />
-                          <Tooltip />
-                          <Legend />
-                          <Bar dataKey="users" fill="#48bb78" />
-                        </BarChart>
-                      </ResponsiveContainer>
-                    </div>
-
-                    <div className="chart-card">
-                      <h3>Sales Distribution</h3>
-                      <ResponsiveContainer width="100%" height={300}>
-                        <PieChart>
-                          <Pie
-                            data={sampleData}
-                            dataKey="sales"
-                            nameKey="name"
-                            cx="50%"
-                            cy="50%"
-                            outerRadius={100}
-                            fill="#8884d8"
-                            label
-                          >
-                            {sampleData.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                            ))}
-                          </Pie>
-                          <Tooltip />
-                        </PieChart>
-                      </ResponsiveContainer>
-                    </div>
+                  <h1 style={{ marginBottom: '2rem', color: '#2d3748' }}>Sales Dashboard</h1>
+                  <div style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', 
+                    gap: '2rem'
+                  }}>
+                    {chartComponents.map((chart, index) => (
+                      <div 
+                        key={index} 
+                        className="chart-card"
+                        style={{
+                          background: 'white',
+                          borderRadius: '12px',
+                          padding: '1.5rem',
+                          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+                        }}
+                      >
+                        <h3 style={{ marginTop: 0, marginBottom: '1rem', color: '#4a5568' }}>
+                          {chart.title}
+                        </h3>
+                        {chart.component}
+                      </div>
+                    ))}
                   </div>
                 </div>
               }

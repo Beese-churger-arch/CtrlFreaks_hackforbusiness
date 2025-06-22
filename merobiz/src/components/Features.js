@@ -1,63 +1,110 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useAccessibility } from '../contexts/AccessibilityContext';
+import {
+  FaUserTie,
+  FaAddressBook,
+  FaChartLine,
+  FaChartPie,
+  FaMobileAlt,
+  FaPuzzlePiece
+} from 'react-icons/fa';
 
 const Features = () => {
+  const { accessibilityOn } = useAccessibility();
+  const [focusedFeature, setFocusedFeature] = useState(null);
+
+  const features = [
+    {
+      title: 'Fraud Detection',
+      description:
+        'Identifies suspicious or deceptive user behavior using data analysis and AI to prevent financial or security risks.',
+      icon: <FaUserTie size={40} color="#1976d2" />
+    },
+    {
+      title: 'Receipt Processing',
+      description:
+        'Uses OCR and AI to automatically extract, categorize, and analyze data from receipts for accounting or expense tracking.',
+      icon: <FaAddressBook size={40} color="#1976d2" />
+    },
+    {
+      title: 'Dynamic Discounts',
+      description:
+        'Monitor deals and trends using Google Trends API to get the best price for the given product.',
+      icon: <FaChartLine size={40} color="#1976d2" />
+    },
+    {
+      title: 'Advanced Reporting',
+      description:
+        'Generate detailed reports and dashboards to track performance and identify opportunities.',
+      icon: <FaChartPie size={40} color="#1976d2" />
+    },
+    {
+      title: 'Mobile Access',
+      description:
+        'Access your sales data anywhere with our fully-featured mobile applications.',
+      icon: <FaMobileAlt size={40} color="#1976d2" />
+    },
+    {
+      title: 'Integrations',
+      description:
+        'Connect with your favorite tools through our extensive integration library.',
+      icon: <FaPuzzlePiece size={40} color="#1976d2" />
+    }
+  ];
+
+  const speak = (text) => {
+    if (accessibilityOn && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
   return (
-    <section className="features">
-      <h2>Everything You Need to Boost Sales</h2>
-      <p className="section-subtitle">Our platform provides all the tools your sales team needs to succeed</p>
+    <section className="features" aria-label="Product features">
+      <h2
+        tabIndex={accessibilityOn ? 0 : -1}
+        onFocus={() => speak('Everything You Need to Boost Sales')}
+      >
+        Everything You Need to Boost Sales
+      </h2>
+      <p
+        className="section-subtitle"
+        tabIndex={accessibilityOn ? 0 : -1}
+        onFocus={() =>
+          speak('Our platform provides all the tools your sales team needs to succeed')
+        }
+      >
+        Our platform provides all the tools your sales team needs to succeed
+      </p>
 
       <div className="feature-grid">
-        {/* Repeat this block for each feature */}
-        <div className="feature-card">
-          <div className="feature-icon">
-            {/* <img src="lead-icon.png" alt="Lead Management" /> */}
+        {features.map((feature, index) => (
+          <div
+            key={index}
+            className={`feature-card ${
+              focusedFeature === index && accessibilityOn ? 'focused' : ''
+            }`}
+            tabIndex={accessibilityOn ? 0 : -1}
+            onMouseEnter={() =>
+              accessibilityOn && speak(`${feature.title}: ${feature.description}`)
+            }
+            onFocus={() => {
+              setFocusedFeature(index);
+              accessibilityOn && speak(`${feature.title}: ${feature.description}`);
+            }}
+            aria-label={`Feature: ${feature.title}. ${feature.description}`}
+          >
+            <div className="feature-icon" aria-hidden="true">
+              {feature.icon}
+            </div>
+            <h3>{feature.title}</h3>
+            <p>{feature.description}</p>
           </div>
-          <h3>Lead Management</h3>
-          <p>Track and manage leads through the entire sales pipeline with customizable stages and automation</p>
-        </div>
-
-        <div className="feature-card">
-          <div className="feature-icon">
-            {/* <img src="contact-icon.png" alt="Contact Management" /> */}
-          </div>
-          <h3>Contact Management</h3>
-          <p>Organize all your customer information in one place with detailed profiles and interaction history</p>
-        </div>
-
-        <div className="feature-card">
-          <div className="feature-icon">
-            {/* <img src="deal-icon.png" alt="Deal Tracking" /> */}
-          </div>
-          <h3>Deal Tracking</h3>
-          <p>Monitor deals and forecast revenue with precision using our visual pipeline management</p>
-        </div>
-
-        <div className="feature-card">
-          <div className="feature-icon">
-            {/* <img src="report-icon.png" alt="Reporting" /> */}
-          </div>
-          <h3>Advanced Reporting</h3>
-          <p>Generate detailed reports and dashboards to track performance and identify opportunities</p>
-        </div>
-
-        <div className="feature-card">
-          <div className="feature-icon">
-            {/* <img src="mobile-icon.png" alt="Mobile Access" /> */}
-          </div>
-          <h3>Mobile Access</h3>
-          <p>Access your sales data anywhere with our fully-featured mobile applications</p>
-        </div>
-
-        <div className="feature-card">
-          <div className="feature-icon">
-            {/* <img src="integration-icon.png" alt="Integrations" /> */}
-          </div>
-          <h3>Integrations</h3>
-          <p>Connect with your favorite tools through our extensive integration library</p>
-        </div>
+        ))}
       </div>
     </section>
-  )
-}
+  );
+};
 
 export default Features;

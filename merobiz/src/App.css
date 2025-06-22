@@ -789,3 +789,18 @@
     margin-left: 180px;
   }
 }
+
+
+/* Add to your existing CSS */
+.focused {
+  outline: 3px solid #ffbf00;
+  outline-offset: 2px;
+}
+
+
+
+/* Add to your main CSS file */
+.testimonial-card.focused {
+  outline: 3px solid #ffbf00;
+  outline-offset: 5px;
+}

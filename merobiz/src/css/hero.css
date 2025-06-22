@@ -1,0 +1,147 @@
+/* Hero Section Container */
+.hero-full-bg {
+  position: relative;
+  width: 100%;
+  min-height: 600px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background: #f9f9fb;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Spline 3D Background Wrapper */
+.spline-bg-wrapper {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* Behind content */
+  pointer-events: none; /* Allows clicks to pass through */
+}
+
+/* Spline Background Canvas or iframe */
+.spline-bg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Foreground Content Container */
+.hero-fg-content {
+  position: relative;
+  z-index: 10; /* In front of spline bg */
+  padding: 80px 40px 40px 60px;
+  max-width: 650px;
+  color: #18181a;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Headline */
+.hero-fg-content h1 {
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 1.2rem;
+  letter-spacing: -1px;
+  color: #17375e;
+}
+
+/* Subheading */
+.hero-fg-content p {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: #3a3a3a;
+}
+
+/* Call to Action Buttons Container */
+.hero-cta {
+  display: flex;
+  gap: 1rem;
+  margin-top: 23rem;
+  margin-bottom: 2.5rem;
+}
+
+/* Buttons */
+.btn-primary,
+.btn-secondary {
+  font-size: 1.1rem;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 32px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  font-weight: 600;
+}
+
+/* Primary Button */
+.btn-primary {
+  background-color: #3a7bfd;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #1a5ad7;
+}
+
+/* Secondary Button */
+.btn-secondary {
+  background-color: #fff;
+  color: #3a7bfd;
+  border: 2px solid #3a7bfd;
+}
+
+.btn-secondary:hover {
+  background-color: #e6f0ff;
+}
+
+/* Trust Badge Text */
+.trust-badges span {
+  font-size: 1.1rem;
+  margin-top: 2rem;
+  display: block;
+  color: #666;
+  letter-spacing: 0.2px;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+  .hero-fg-content {
+    padding: 60px 20px 40px 20px;
+    max-width: 100%;
+  }
+
+  .hero-fg-content h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero-fg-content p {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-full-bg {
+    min-height: 420px;
+  }
+
+  .hero-fg-content {
+    padding: 32px 8px 24px 8px;
+  }
+
+  .hero-fg-content h1 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Optional: Add hover or focus styles for accessibility */
+.hero-fg-content h1:focus,
+.hero-fg-content p:focus,
+.btn-primary:focus,
+.btn-secondary:focus {
+  outline: 3px solid #3a7bfd;
+  outline-offset: 2px;
+}

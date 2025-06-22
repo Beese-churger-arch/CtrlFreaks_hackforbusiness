@@ -1,0 +1,69 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+.ac-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.ac-modal {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  min-width: 300px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  text-align: center;
+}
+
+.ac-btn {
+  margin: 0 1rem;
+  padding: 0.5rem 2rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.ac-btn-primary {
+  background: #0078d7;
+  color: #fff;
+}
+
+.ac-btn-secondary {
+  background: #eee;
+  color: #333;
+}
+
+.ac-status {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #0078d7;
+}
+
+.ac-buttons-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.ac-btn.focused {
+  outline: 3px solid #ffbf00;
+  outline-offset: 2px;
+}
+
+/* Add accessible mode styles as needed */
+.accessible-mode {
+  /* Example accessibility styles */
+  filter: invert(100%);
+  font-size: 18px;
+}
