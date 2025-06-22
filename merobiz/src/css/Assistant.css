@@ -1,0 +1,80 @@
+.assistant-toggle {
+  position: fixed;
+  bottom: 50px;    /* keep 30px higher */
+  right: 20px;
+  left: auto;
+  z-index: 9999;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 70px;       /* bigger circle width */
+  height: 70px;      /* bigger circle height */
+  font-size: 16px;   /* smaller text */
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  transition: background-color 0.3s ease;
+  font-size: 16px;  /* or your preferred size */
+  line-height: 1;   /* remove extra line height */
+  letter-spacing: 0; /* no letter spacing */
+  padding: 0;        /* no internal padding */
+  text-align: center; 
+  white-space: nowrap; /* prevent wrapping */
+}
+
+
+
+.assistant-toggle:hover {
+  background-color: #0056b3;
+}
+
+
+.assistant-container {
+  position: fixed;
+  bottom: 130px;   /* 80px + 30px higher */
+  right: 20px;     /* align with button */
+  left: auto;      /* reset left */
+  width: 300px;
+  max-height: 400px;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 9999;
+}
+.input-area {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  gap: 8px; /* controls spacing between input and buttons */
+  background-color: #f1f1f1;
+}
+
+.input-area input {
+  flex: 1;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.input-area button {
+  padding: 8px 10px;
+  font-size: 14px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.input-area button:last-child {
+  background-color: #28a745; /* microphone button different color (optional) */
+}

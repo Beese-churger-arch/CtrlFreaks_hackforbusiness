@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import Dashboard from './components/Dashboard/Dashboard';
 import Login from './components/Login';
 import Register from './components/Register';
+import AssistantButton from './components/ai-assistant/AssistantButton';
 
 const App = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -132,8 +133,10 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard/*" element={user? <Dashboard /> : <Navigate to="/login" />} />
       </Routes>
+       <AssistantButton />
     </>
   );
 }
 
 export default App;
+

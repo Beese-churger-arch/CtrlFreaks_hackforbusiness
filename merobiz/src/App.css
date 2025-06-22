@@ -766,3 +766,26 @@
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
+
+
+
+.hero {
+  margin-left: 72px; /* same as sidebar default width */
+  padding: 2rem;      /* optional padding */
+  transition: margin-left 0.3s ease;
+}
+
+/* When sidebar expands, increase margin */
+.sidebar.expanded ~ .hero {
+  margin-left: 180px;
+}
+
+/* Responsive adjustment */
+@media (max-width: 768px) {
+  .hero {
+    margin-left: 60px;
+  }
+  .sidebar.expanded ~ .hero {
+    margin-left: 180px;
+  }
+}
