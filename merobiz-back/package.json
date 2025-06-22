@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "dev-all": "concurrently \"npm run dev\" \"npm --prefix ../clone start\" \"npm --prefix ../merobiz start\" \"python start_pyserver.py\""
   },
   "keywords": [],
   "author": "",
@@ -23,6 +24,7 @@
     "nodemon": "^3.1.9"
   },
   "devDependencies": {
+    "concurrently": "^9.1.2",
     "prisma": "^6.10.1"
   }
 }
