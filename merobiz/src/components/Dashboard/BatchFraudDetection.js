@@ -1,10 +1,24 @@
 import React, { useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useAccessibility } from '../../contexts/AccessibilityContext';
 
 const BatchFraudDetection = () => {
+  const { accessibilityOn } = useAccessibility();
+
   const [file, setFile] = useState(null);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const speak = (text) => {
+    if (accessibilityOn && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      window.speechSynthesis.speak(utterance);
+    }
+  };
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -35,6 +49,8 @@ const BatchFraudDetection = () => {
       }
 
       setResults(data);
+      toast.success("Batch analysis complete!");
+      speak(`Batch analysis complete. ${data.length} fraudulent transactions detected.`);
     } catch (err) {
       setError(err.message || 'Something went wrong');
     } finally {
@@ -53,34 +69,75 @@ const BatchFraudDetection = () => {
 
   return (
     <div style={{ maxWidth: "100%", margin: 'auto', padding: 30 }}>
-      <h2>Batch Fraud Detection</h2>
+      <ToastContainer position="top-right" autoClose={3000} />
+
+      <h2
+        tabIndex={0}
+        onFocus={() => speak("Batch Fraud Detection")}
+        onMouseEnter={() => speak("Batch Fraud Detection")}
+        aria-label="Batch Fraud Detection"
+      >
+        Batch Fraud Detection
+      </h2>
 
       <input
         type="file"
         accept=".csv"
         onChange={handleFileChange}
         style={{ marginBottom: 10 }}
+        aria-label="Upload CSV file"
+        tabIndex={0}
+        onFocus={() => speak("Choose a CSV file to analyze")}
+        onMouseEnter={() => speak("Choose a CSV file to analyze")}
       />
       <br />
+      <div
+      tabIndex={0}
+      onFocus={() => speak("Upload and analyze")}
+      onMouseEnter={() => speak("Upload and analyze")}
+      aria-label="Upload and analyze button wrapper"
+      style={{ display: 'inline-block' }}
+    >
       <button
         className="btn-primary"
         onClick={handleUpload}
         disabled={!file || loading}
+        aria-label="Upload and analyze file"
       >
         {loading ? 'Analyzing...' : 'Upload & Analyze'}
       </button>
+    </div>
 
-      {error && <p style={{ color: 'red', marginTop: 15 }}>{error}</p>}
+      {error && (
+        <p
+          style={{ color: 'red', marginTop: 15 }}
+          tabIndex={0}
+          onFocus={() => speak(error)}
+          onMouseEnter={() => speak(error)}
+          aria-live="assertive"
+        >
+          {error}
+        </p>
+      )}
 
       {results.length > 0 && (
         <>
-          <h3 style={{ marginTop: 30 }}>Fraudulent Transactions</h3>
+          <h3
+            style={{ marginTop: 30 }}
+            tabIndex={0}
+            onFocus={() => speak("Fraudulent Transactions")}
+            onMouseEnter={() => speak("Fraudulent Transactions")}
+          >
+            Fraudulent Transactions
+          </h3>
           <div style={{ overflowX: 'auto' }}>
             <table className="accessible-table">
               <thead>
                 <tr>
                   {getTableHeaders().map((key) => (
-                    <th key={key}>{key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</th>
+                    <th key={key}>
+                      {key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
+                    </th>
                   ))}
                 </tr>
               </thead>
@@ -92,8 +149,8 @@ const BatchFraudDetection = () => {
                         {typeof row[key] === 'boolean'
                           ? row[key] ? 'Yes' : 'No'
                           : key === 'confidence'
-                          ? `${(row[key] * 100).toFixed(2)}%`
-                          : row[key] ?? '-'}
+                            ? `${(row[key] * 100).toFixed(2)}%`
+                            : row[key] ?? '-'}
                       </td>
                     ))}
                   </tr>

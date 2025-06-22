@@ -804,3 +804,30 @@
   outline: 3px solid #ffbf00;
   outline-offset: 5px;
 }
+
+
+/* Base accessibility mode overrides */
+body.accessible-mode .accessible-table {
+  background-color: white;
+  color: black;
+  border-collapse: collapse;
+}
+
+/* Header styling */
+body.accessible-mode .accessible-table th {
+  background-color: #f0f0f0;
+  color: black;
+  border: 1px solid #ccc;
+}
+
+/* Data cell styling */
+body.accessible-mode .accessible-table td {
+  background-color: white;
+  color: black;
+  border: 1px solid #ccc;
+}
+
+/* Row stripe (optional) */
+body.accessible-mode .accessible-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
