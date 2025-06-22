@@ -26,12 +26,11 @@
 
 
 import React from 'react';
-import Sidebar from './Sidebar';
+// import Sidebar from './Sidebar';
 
 const Hero = () => {
   return (
     <>
-      <Sidebar />
       <section className="hero">
         <div className="hero-content">
           <h1>UNIFY YOUR WORKFLOW. UNLEASH POTENTIAL.</h1>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 import Footer from '../Footer';
 import { Routes, Route } from 'react-router-dom';
@@ -20,94 +20,116 @@ const sampleData = [
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
-const Dashboard = () => (
-  <div className="dashboard-layout" style={{ display: 'flex', minHeight: '100vh' }}>
-    <Sidebar />
-    <div className="dashboard-content" style={{ flex: 1, padding: '2rem' }}>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <div>
-              <h1>Sales Overview</h1>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '2rem' }}>
-                
-                <div className="chart-card">
-                  <h3>Sales Over Time</h3>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <LineChart data={sampleData}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Line type="monotone" dataKey="sales" stroke="#8884d8" />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
+// Sidebar width constants
+const SIDEBAR_WIDTH_COLLAPSED = 72;
+const SIDEBAR_WIDTH_EXPANDED = 180;
 
-                <div className="chart-card">
-                  <h3>Fraud Detections</h3>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <BarChart data={sampleData}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Bar dataKey="frauds" fill="#f56565" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
+const Dashboard = () => {
+  const [expanded, setExpanded] = useState(false);
 
-                <div className="chart-card">
-                  <h3>User Growth</h3>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <BarChart data={sampleData}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Bar dataKey="users" fill="#48bb78" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
+  return (
+    <div className="dashboard-layout" style={{ 
+      display: 'flex', 
+      flexDirection: 'column', 
+      minHeight: '100vh' 
+    }}>
+      <div style={{ display: 'flex', flex: 1 }}>
+        <Sidebar expanded={expanded} setExpanded={setExpanded} />
+        <div 
+          className="dashboard-content" 
+          style={{ 
+            flex: 1, 
+            padding: '2rem',
+            marginLeft: expanded ? SIDEBAR_WIDTH_EXPANDED : SIDEBAR_WIDTH_COLLAPSED,
+            transition: 'margin-left 0.2s cubic-bezier(.4,0,.2,1)'
+          }}
+        >
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <div>
+                  <h1>Sales Overview</h1>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '2rem' }}>
+                    
+                    <div className="chart-card">
+                      <h3>Sales Over Time</h3>
+                      <ResponsiveContainer width="100%" height={300}>
+                        <LineChart data={sampleData}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="name" />
+                          <YAxis />
+                          <Tooltip />
+                          <Legend />
+                          <Line type="monotone" dataKey="sales" stroke="#8884d8" />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
 
-                <div className="chart-card">
-                  <h3>Sales Distribution</h3>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <PieChart>
-                      <Pie
-                        data={sampleData}
-                        dataKey="sales"
-                        nameKey="name"
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={100}
-                        fill="#8884d8"
-                        label
-                      >
-                        {sampleData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                      </Pie>
-                      <Tooltip />
-                    </PieChart>
-                  </ResponsiveContainer>
+                    <div className="chart-card">
+                      <h3>Fraud Detections</h3>
+                      <ResponsiveContainer width="100%" height={300}>
+                        <BarChart data={sampleData}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="name" />
+                          <YAxis />
+                          <Tooltip />
+                          <Legend />
+                          <Bar dataKey="frauds" fill="#f56565" />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+
+                    <div className="chart-card">
+                      <h3>User Growth</h3>
+                      <ResponsiveContainer width="100%" height={300}>
+                        <BarChart data={sampleData}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="name" />
+                          <YAxis />
+                          <Tooltip />
+                          <Legend />
+                          <Bar dataKey="users" fill="#48bb78" />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+
+                    <div className="chart-card">
+                      <h3>Sales Distribution</h3>
+                      <ResponsiveContainer width="100%" height={300}>
+                        <PieChart>
+                          <Pie
+                            data={sampleData}
+                            dataKey="sales"
+                            nameKey="name"
+                            cx="50%"
+                            cy="50%"
+                            outerRadius={100}
+                            fill="#8884d8"
+                            label
+                          >
+                            {sampleData.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                            ))}
+                          </Pie>
+                          <Tooltip />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          }
-        />
-        <Route path="pricing" element={<DynamicPricing />} />
-        <Route path="receipt" element={<ReceiptProcessing />} />
-        <Route path="fraud" element={<FraudDetection />} />
-        <Route path="fraud-batch" element={<BatchFraudDetection />} />
-      </Routes>
+              }
+            />
+            <Route path="pricing" element={<DynamicPricing />} />
+            <Route path="receipt" element={<ReceiptProcessing />} />
+            <Route path="fraud" element={<FraudDetection />} />
+            <Route path="fraud-batch" element={<BatchFraudDetection />} />
+          </Routes>
+        </div>
+      </div>
       <Footer />
     </div>
-  </div>
-);
+  );
+};
 
 export default Dashboard;
