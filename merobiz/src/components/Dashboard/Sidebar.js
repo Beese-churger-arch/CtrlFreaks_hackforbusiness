@@ -5,7 +5,7 @@ const Sidebar = () => (
   <nav className="sidebar">
     <ul>
       <li><NavLink to="/dashboard/pricing">Dynamic Pricing</NavLink></li>
-      <li><NavLink to="/dashboard/social">Social Trends</NavLink></li>
+      <li><NavLink to="/dashboard/receipt">Receipt Processing</NavLink></li>
       <li><NavLink to="/dashboard/fraud">Fraud Detection(single transaction)</NavLink></li>
       <li><NavLink to="/dashboard/fraud-batch">Fraud Detection (batch)</NavLink> </li>
     </ul>

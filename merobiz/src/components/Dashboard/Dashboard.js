@@ -3,7 +3,7 @@ import Sidebar from './Sidebar';
 import Footer from '../Footer';
 import { Routes, Route } from 'react-router-dom';
 import DynamicPricing from './DynamicPricing';
-import SocialTrends from './SocialTrends';
+import ReceiptProcessing from './ReceiptProcessing';
 import FraudDetection from './FraudDetection';
 import BatchFraudDetection from './BatchFraudDetection';
 import {
@@ -101,7 +101,7 @@ const Dashboard = () => (
           }
         />
         <Route path="pricing" element={<DynamicPricing />} />
-        <Route path="social" element={<SocialTrends />} />
+        <Route path="receipt" element={<ReceiptProcessing />} />
         <Route path="fraud" element={<FraudDetection />} />
         <Route path="fraud-batch" element={<BatchFraudDetection />} />
       </Routes>

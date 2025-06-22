@@ -5,6 +5,9 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 import io
+from typing import List
+from fastapi import UploadFile, File
+
 
 #loading the model
 model = joblib.load("fraud_detector.pkl")
@@ -121,3 +124,93 @@ async def predict_batch(file: UploadFile = File(...)):
             })
 
     return results
+
+
+import os
+import csv
+
+# Make sure you import the invoice extraction code parts from before:
+import fitz  # PyMuPDF
+import re
+from datetime import datetime
+
+# Reuse wanted fields list
+wanted_fields = [
+    'Transaction Date',
+    'Transaction ID',
+    'Feature Name',
+    'Product Name',
+    'Total Amount',
+    'Transaction Type',
+    'Channel',
+    'Status',
+    'Remarks'
+]
+
+def extract_text_from_pdf(pdf_bytes):
+    doc = fitz.open(stream=pdf_bytes, filetype="pdf")
+    text = ""
+    for page in doc:
+        text += page.get_text()
+    print("==== Extracted Text ====")
+    print(text)
+    print("========================")
+    return text
+
+def parse_invoice_text(text):
+    result = {}
+    lines = text.split('\n')
+
+    for idx, line in enumerate(lines):
+        for field in wanted_fields:
+            if field.lower() in line.lower().strip(":").strip():
+                if idx + 1 < len(lines):
+                    value = lines[idx + 1].strip()
+                    if value != "":
+                        result[field] = value
+                break
+
+    # Clean and convert Total Amount to float
+    if "Total Amount" in result:
+        try:
+            clean_val = result["Total Amount"].replace(",", "")
+            result["Total Amount"] = float(clean_val)
+        except Exception:
+            pass
+
+    # Parse and standardize date format
+    if "Transaction Date" in result:
+        try:
+            dt = datetime.strptime(result["Transaction Date"], "%d-%b-%Y,%I:%M %p")
+            result["Transaction Date"] = dt.strftime("%Y-%m-%d %H:%M:%S")
+        except Exception:
+            pass
+
+    # Fill missing fields with empty strings
+    for field in wanted_fields:
+        if field not in result:
+            result[field] = ""
+
+    return result
+
+
+@app.post("/upload-invoices-pdf/")
+async def upload_invoices_pdf(files: List[UploadFile] = File(...)):
+    csv_file = "invoice_data.csv"
+    file_exists = os.path.isfile(csv_file)
+    
+    all_data = []
+    
+    with open(csv_file, mode='a', newline='', encoding='utf-8') as f:
+        writer = csv.DictWriter(f, fieldnames=wanted_fields)
+        if not file_exists:
+            writer.writeheader()
+        
+        for file in files:
+            pdf_bytes = await file.read()
+            text = extract_text_from_pdf(pdf_bytes)
+            data = parse_invoice_text(text)
+            writer.writerow(data)
+            all_data.append({"filename": file.filename, "extracted_data": data})
+    
+    return {"message": f"{len(files)} files processed and appended.", "results": all_data}
