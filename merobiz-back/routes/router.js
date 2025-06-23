@@ -12,6 +12,8 @@ router.use("/api/pricing", pricingRouter)
 router.use("/api/assistant", AIAssistant)
 
 router.use("/products", fetchProducts)
+
+//router.use("/checkout", something something) maybe feature to add later
 // router.use(authentication)
 
 // router.use("/posts", postRouter)
