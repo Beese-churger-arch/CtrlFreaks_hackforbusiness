@@ -31,12 +31,13 @@ _Note: The chatbot currently does not have access to any internal data._
 **Requirements:**
 
 - Node.js (see `package.json` for version)
-- Python 3.x (for ML server)
+- Python 3.13.1 (for ML server)
+- Python dependencies : fastapi, uvicorn, pydantic, pandas, scikit-learn, joblib, python-multipart, PyMuPDF
 
 **Steps:**
 
 ```bash
-# In each directory (merobiz-back, merobiz), run:
+# In each directory (merobiz-back, merobiz, clone), run:
 npm install
 ```
 
@@ -60,34 +61,60 @@ This starts four servers, each with a terminal prefix:
 | 2 | Main frontend | 3000 |
 | 3 | Python server (FastAPI, for ML features) | 8000 |
 
-> **Note:** The e-commerce clone includes framework for demo features (like inventory tracking), but some features are not implemented.
+> **Note:** The e-commerce clone includes framework for features (like inventory tracking), but some features are not implemented.
 
 ---
 
 ## Using the Features
 
-1. **Login or Sign Up**
-Access the dashboard after authentication.
-2. **Navigation**
-Use the sidebar to access each section:
-    - **Home:** Interactive dashboard
-    - **Dynamic Pricing:**
-Link to the e-commerce clone.
+1. **Login or Sign Up**  
+   Access the dashboard after authentication.
 
-_Note: The crossed-out price is the base price, the red price is the calculated price, and the discount tag shows the Google Trends-based discount._
+2. **Navigation**  
+   Use the sidebar to access each section:
+
+   ![Navbar screenshot](/screenshots/navbar.png)
+
+   - **Home:** Interactive dashboard
+
+    ![Dashboard screenshot](/screenshots/dashboard.png)
+
+   - **Dynamic Pricing:** Link to the e-commerce clone.
+
+   ![Dynamic Pricing screenshot](/screenshots/dynamicpricing.png)
+
+   ![Clone site screenshot](/screenshots/clonepage.png)
+   Main page of the clone site
+
+   ![clone site product screenshot](/screenshots/productpage.png)
+   Product page
+
+    _Note: The crossed-out price is the base price, the red price is the calculated price, and the discount tag shows the Google Trends-based discount._
     - **Receipt Processing:**
-Upload one or more PDF receipts. Extracted data is shown in a table and exported as a CSV in `/merobiz-back`.
+    Upload one or more PDF receipts. Extracted data is shown in a table and exported as a CSV in `/merobiz-back`.
+
+    ![Receipt Processing](/screenshots/receiptProcessing.png)
+
     - **Fraud Detection (Single):**
-Manually input transaction info, get a verdict and confidence score.
+    Manually input transaction info, get a verdict and confidence score.
+
+    ![Single input fraud detection](/screenshots/frauddetectorSingle.png)
+
     - **Fraud Detection (Batch):**
-Upload a CSV of transactions. Outputs a table with flagged transactions and the email that processed each for double-checking.
+    Upload a CSV of transactions. Outputs a table with flagged transactions and the email that processed each for double-checking.
+
+    ![Batch fraud detection](/screenshots/frauddetectionBatch.png)
+
     - **Other Sections:**
-Currently aesthetic, with no function.
+    Currently aesthetic, with no function.
     - **AI Chatbot:**
+
+    ![Chatbot screenshot](/screenshots/chatbot.png)
 
 ---
 
 ## Accessibility
+On webpage start there is a pop up that asks if you want to accesibility mode or not. The prompt will appear again on refresh.
 
 - Toggle high-contrast mode and TTS for improved usability.
 - Tab and hover support for easy navigation.
